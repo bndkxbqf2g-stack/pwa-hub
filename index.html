@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#070914" />
+    <meta
+      name="description"
+      content="PWA Hub – deine persönliche Startseite für installierbare Web-Apps."
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="PWA Hub" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./pwa-hub-icon.jpg" type="image/jpeg" />
+    <link rel="apple-touch-icon" href="./icon-192.png" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>PWA Hub · Meine Apps</title>
+  </head>
+  <body>
+    <div class="ambient-light ambient-light--one" aria-hidden="true"></div>
+    <div class="ambient-light ambient-light--two" aria-hidden="true"></div>
+    <div class="ambient-grid" aria-hidden="true"></div>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="PWA Hub Startseite">
+          <span class="brand-mark" aria-hidden="true">
+            <img src="./pwa-hub-icon.jpg" alt="" />
+          </span>
+          <span class="brand-copy">
+            <span class="brand-name">PWA Hub</span>
+            <span class="brand-caption">Deine Apps. Ein Ort.</span>
+          </span>
+        </a>
+
+        <button class="icon-button icon-button--subtle" id="openSettingsButton" type="button" aria-label="Einstellungen öffnen" title="Einstellungen">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" />
+            <path d="m19.4 15 .1.1a1.8 1.8 0 0 1-2.5 2.5l-.1-.1a1.8 1.8 0 0 0-3.1 1.3v.2a1.8 1.8 0 0 1-3.6 0v-.2a1.8 1.8 0 0 0-3.1-1.3l-.1.1a1.8 1.8 0 0 1-2.5-2.5l.1-.1a1.8 1.8 0 0 0-1.3-3.1h-.2a1.8 1.8 0 0 1 0-3.6h.2a1.8 1.8 0 0 0 1.3-3.1l-.1-.1a1.8 1.8 0 0 1 2.5-2.5l.1.1a1.8 1.8 0 0 0 3.1-1.3v-.2a1.8 1.8 0 0 1 3.6 0v.2a1.8 1.8 0 0 0 3.1 1.3l.1-.1a1.8 1.8 0 0 1 2.5 2.5l-.1.1a1.8 1.8 0 0 0 1.3 3.1h.2a1.8 1.8 0 0 1 0 3.6h-.2a1.8 1.8 0 0 0-1.3 3.1Z" />
+          </svg>
+        </button>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="pageTitle">
+          <div class="eyebrow"><span class="eyebrow-pulse"></span> DEIN APP-STARTPUNKT</div>
+          <h1 id="pageTitle">Meine Apps</h1>
+          <p class="hero-copy">Alle deine PWAs. Schnell erreichbar, ganz bei dir.</p>
+        </section>
+
+        <section class="hub-controls" aria-label="Apps durchsuchen und verwalten">
+          <form class="search-bar" id="searchForm" role="search">
+            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="10.8" cy="10.8" r="6.2"></circle>
+              <path d="m16 16 4.5 4.5"></path>
+            </svg>
+            <input id="searchInput" type="search" autocomplete="off" placeholder="Apps durchsuchen …" aria-label="Apps nach Name oder Beschreibung durchsuchen" />
+            <button class="clear-search" id="clearSearchButton" type="button" aria-label="Suche löschen" hidden>×</button>
+          </form>
+
+          <div class="toolbar">
+            <div class="toolbar-summary">
+              <span class="summary-dot" aria-hidden="true"></span>
+              <span id="appCount">0 Apps</span>
+            </div>
+            <div class="toolbar-actions">
+              <label class="select-wrap" for="categoryFilter">
+                <span class="sr-only">Kategorie filtern</span>
+                <select id="categoryFilter" aria-label="Nach Kategorie filtern">
+                  <option value="all">Alle Kategorien</option>
+                </select>
+              </label>
+              <label class="select-wrap" for="sortSelect">
+                <span class="sr-only">Apps sortieren</span>
+                <select id="sortSelect" aria-label="Apps sortieren">
+                  <option value="name-asc">Name A–Z</option>
+                  <option value="name-desc">Name Z–A</option>
+                  <option value="newest">Zuletzt hinzugefügt</option>
+                  <option value="oldest">Zuerst hinzugefügt</option>
+                </select>
+              </label>
+              <button class="button button--primary button--compact" id="addAppButton" type="button">
+                <span class="button-plus" aria-hidden="true">+</span>
+                App hinzufügen
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="favorites-section" id="favoritesSection" aria-labelledby="favoritesTitle" hidden>
+          <div class="section-heading section-heading--compact">
+            <div>
+              <span class="section-kicker">SCHNELLZUGRIFF</span>
+              <h2 id="favoritesTitle">Favoriten</h2>
+            </div>
+            <span class="section-count" id="favoriteCount"></span>
+          </div>
+          <div class="favorite-list" id="favoriteList"></div>
+        </section>
+
+        <section class="apps-section" aria-labelledby="allAppsTitle">
+          <div class="section-heading">
+            <div>
+              <span class="section-kicker">DEINE SAMMLUNG</span>
+              <h2 id="allAppsTitle">Alle Apps</h2>
+            </div>
+            <span class="section-count" id="resultCount">0 Ergebnisse</span>
+          </div>
+
+          <div class="app-grid" id="appGrid"></div>
+
+          <div class="empty-state" id="emptyState" hidden>
+            <div class="empty-orbit" aria-hidden="true"><span>✦</span></div>
+            <h3 id="emptyTitle">Dein Hub ist bereit.</h3>
+            <p id="emptyCopy">Füge deine erste PWA hinzu, um hier deinen persönlichen Startpunkt aufzubauen.</p>
+            <button class="button button--primary" id="emptyAddButton" type="button">
+              <span class="button-plus" aria-hidden="true">+</span>
+              Erste App hinzufügen
+            </button>
+          </div>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <span class="footer-status"><span class="footer-status-dot" aria-hidden="true"></span> Lokal in diesem Browser gespeichert</span>
+        <span class="footer-separator" aria-hidden="true">·</span>
+        <span>Keine automatische Gerätesynchronisierung</span>
+      </footer>
+    </div>
+
+    <dialog class="modal" id="appDialog" aria-labelledby="appDialogTitle">
+      <div class="modal-panel">
+        <div class="modal-header">
+          <div>
+            <span class="section-kicker" id="appDialogKicker">NEUE VERKNÜPFUNG</span>
+            <h2 id="appDialogTitle">App hinzufügen</h2>
+          </div>
+          <button class="icon-button icon-button--subtle" id="closeAppDialogButton" type="button" aria-label="Dialog schließen">×</button>
+        </div>
+
+        <form class="app-form" id="appForm" novalidate>
+          <input id="appId" type="hidden" />
+          <div class="form-field">
+            <label for="appName">Name <span aria-hidden="true">*</span></label>
+            <input id="appName" name="name" type="text" maxlength="60" placeholder="z. B. Wochenendkompass" required />
+          </div>
+
+          <div class="form-field">
+            <label for="appUrl">URL <span aria-hidden="true">*</span></label>
+            <input id="appUrl" name="url" type="url" inputmode="url" maxlength="2048" placeholder="https://deine-app.example" required />
+            <span class="field-hint">Erlaubt sind nur http:// und https://.</span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field form-field--wide">
+              <label for="appDescription">Kurzbeschreibung</label>
+              <textarea id="appDescription" name="description" maxlength="140" rows="3" placeholder="Wofür nutzt du diese App?"></textarea>
+            </div>
+            <div class="form-field">
+              <label for="appCategory">Kategorie <span aria-hidden="true">*</span></label>
+              <input id="appCategory" name="category" type="text" list="categorySuggestions" maxlength="32" placeholder="Produktivität" required />
+              <datalist id="categorySuggestions">
+                <option value="Produktivität"></option>
+                <option value="Organisation"></option>
+                <option value="Finanzen"></option>
+                <option value="Freizeit"></option>
+                <option value="Gesundheit"></option>
+                <option value="Lernen"></option>
+                <option value="Sonstiges"></option>
+              </datalist>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="appIcon">Symbol</label>
+            <div class="icon-input-row">
+              <input id="appIcon" name="icon" type="text" maxlength="8" placeholder="✦" aria-describedby="iconHint" />
+              <span class="icon-preview" id="iconPreview" aria-hidden="true">✦</span>
+            </div>
+            <span class="field-hint" id="iconHint">Ein Emoji oder ein kurzes Zeichen, das die App repräsentiert.</span>
+            <div class="icon-suggestions" aria-label="Symbolvorschläge">
+              <button type="button" class="icon-suggestion" data-icon="✦">✦</button>
+              <button type="button" class="icon-suggestion" data-icon="◈">◈</button>
+              <button type="button" class="icon-suggestion" data-icon="⌁">⌁</button>
+              <button type="button" class="icon-suggestion" data-icon="☼">☼</button>
+              <button type="button" class="icon-suggestion" data-icon="↗">↗</button>
+              <button type="button" class="icon-suggestion" data-icon="●">●</button>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="button button--ghost" id="cancelAppButton" type="button">Abbrechen</button>
+            <button class="button button--primary" type="submit"><span id="saveAppLabel">App speichern</span><span aria-hidden="true">↗</span></button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog class="modal" id="settingsDialog" aria-labelledby="settingsDialogTitle">
+      <div class="modal-panel modal-panel--settings">
+        <div class="modal-header">
+          <div>
+            <span class="section-kicker">DEIN HUB</span>
+            <h2 id="settingsDialogTitle">Einstellungen</h2>
+          </div>
+          <button class="icon-button icon-button--subtle" id="closeSettingsButton" type="button" aria-label="Dialog schließen">×</button>
+        </div>
+
+        <div class="settings-block">
+          <h3>Daten sichern</h3>
+          <p>Exportiere deine App-Liste als JSON oder importiere eine Sicherung. Beim Import werden vorhandene Einträge nie still überschrieben.</p>
+          <div class="settings-actions">
+            <button class="button button--secondary" id="exportButton" type="button">
+              <span aria-hidden="true">↓</span> JSON exportieren
+            </button>
+            <button class="button button--secondary" id="importButton" type="button">
+              <span aria-hidden="true">↑</span> JSON importieren
+            </button>
+            <input id="importFileInput" type="file" accept="application/json,.json" hidden />
+          </div>
+          <p class="import-feedback" id="importFeedback" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="settings-block settings-block--install">
+          <h3>Als App installieren</h3>
+          <p id="installDescription">Installiere PWA Hub auf deinem Gerät für einen direkten Start vom Home-Bildschirm.</p>
+          <button class="button button--primary button--full" id="installButton" type="button"><span aria-hidden="true">⌂</span> Installationshinweise</button>
+        </div>
+
+        <div class="settings-note">
+          <span class="note-icon" aria-hidden="true">i</span>
+          <p>Deine Daten bleiben lokal in diesem Browser. Für ein anderes Gerät nutze bitte Export und Import – eine automatische Synchronisierung gibt es nicht.</p>
+        </div>
+      </div>
+    </dialog>
+
+    <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+
+    <noscript>
+      <div class="noscript-message">Für PWA Hub muss JavaScript aktiviert sein.</div>
+    </noscript>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>
+
